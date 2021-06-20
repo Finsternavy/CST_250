@@ -15,3 +15,4 @@ output/
 build/
 report/
 reports/
+obj/
