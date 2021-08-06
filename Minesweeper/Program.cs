@@ -217,6 +217,11 @@ namespace Minesweeper
 
                 // set selected cell as visited
                 board.grid[userInputRow, userInputColumn].setVisited(true);
+
+                if(board.grid[userInputRow, userInputColumn].getLiveNeighbors() == 0)
+                {
+                    board.floodFill(userInputRow, userInputColumn);
+                }
                 // print the updated board to the user
                 printBoardDuringGame(board);
                 // display to the user the results of there last selection
