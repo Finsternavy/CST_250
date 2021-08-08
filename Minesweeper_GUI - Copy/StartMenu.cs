@@ -20,7 +20,7 @@ namespace Minesweeper_GUI
         {
             if(easyRadioButton.Checked == true)
             {
-                gameBoard.populateGrid(12);
+                gameBoard.populateGrid(5);
                 gameBoard.stopWatch.Start();
             }
             else if(mediumRadioButton.Checked == true)

@@ -46,7 +46,8 @@ namespace Minesweeper_GUI
                     buttonGrid[row, column].Height = buttonSize;
                     
 
-                    buttonGrid[row, column].MouseDown += Grid_Button_MouseDown;
+                    buttonGrid[row, column].MouseClick += Grid_Button_MouseClick;
+                    buttonGrid[row, column].MouseClick += right_MouseClick;
                     panel1.Controls.Add(buttonGrid[row, column]);
                     buttonGrid[row, column].Location = new Point(buttonSize * row, buttonSize * column);
                     
@@ -60,22 +61,23 @@ namespace Minesweeper_GUI
         }
 
        
-        private void Grid_Button_MouseDown(object sender, MouseEventArgs e)
+        private void Grid_Button_MouseClick(object sender, MouseEventArgs e)
         {
-            string[] stringArray = (sender as Button).Tag.ToString().Split('|');
-            int row = int.Parse(stringArray[0]);
-            int column = int.Parse(stringArray[1]);
-
-            Cell currentCell = board.grid[row, column];
-
-
-            (sender as Button).BackColor = Color.Cornsilk;
-
-            updateButtonLabels();
 
             switch (e.Button)
             {
                 case MouseButtons.Left:
+
+                    string[] stringArray = (sender as Button).Tag.ToString().Split('|');
+                    int row = int.Parse(stringArray[0]);
+                    int column = int.Parse(stringArray[1]);
+
+                    Cell currentCell = board.grid[row, column];
+
+                    updateButtonLabels();
+                    
+
+                    (sender as Button).BackColor = Color.Cornsilk;
 
                     if (board.grid[currentCell.getRow(), currentCell.getColumn()].getLive() == true)
                     {
@@ -117,12 +119,89 @@ namespace Minesweeper_GUI
 
                 case MouseButtons.Right:
 
-                    buttonGrid[currentCell.getRow(), currentCell.getColumn()].Image =
-                        (Image)(new Bitmap(flagImage, new Size(buttonGrid[currentCell.getRow(), currentCell.getColumn()].Width, buttonGrid[currentCell.getRow(), currentCell.getColumn()].Height)));
+                    string[] stringArray2 = (sender as Button).Tag.ToString().Split('|');
+                    int row2 = int.Parse(stringArray2[0]);
+                    int column2 = int.Parse(stringArray2[1]);
 
+                    Cell currentCell2 = board.grid[row2, column2];
+
+                    updateButtonLabels();
+                    if (checkForWin())
+                    {
+                        gameWin();
+                        MessageBox.Show("You won!!!  Your total time was: ");
+                    }
+                    
+                    (sender as Button).BackColor = Color.Cornsilk;
+
+                    if (board.grid[currentCell2.getRow(), currentCell2.getColumn()].getLive() == true)
+                    {
+
+                        
+                        for (int r = 0; r < board.getSize(); r++)
+                        {
+                            for (int c = 0; c < board.getSize(); c++)
+                            {
+                                board.grid[r, c].setVisited(true);
+                            }
+                        }
+                        gameLoss();
+
+
+                    }
+                    else if (board.grid[currentCell2.getRow(), currentCell2.getColumn()].getLiveNeighbors() == 0)
+                    {
+                        board.floodFill(currentCell2.getRow(), currentCell2.getColumn());
+                        updateButtonLabels();
+                    }
+                    else
+                    {
+                        //(sender as Button).Text = board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors().ToString();
+                        board.grid[currentCell2.getRow(), currentCell2.getColumn()].setVisited(true);
+                        buttonGrid[currentCell2.getRow(), currentCell2.getColumn()].Text = board.grid[currentCell2.getRow(), currentCell2.getColumn()].getLiveNeighbors().ToString();
+                        buttonGrid[currentCell2.getRow(), currentCell2.getColumn()].Enabled = false;
+                    }
                     break;
             }
-            
+            /*string[] stringArray = (sender as Button).Tag.ToString().Split('|');
+            int row = int.Parse(stringArray[0]);
+            int column = int.Parse(stringArray[1]);
+
+            Cell currentCell = board.grid[row, column];
+
+            updateButtonLabels();
+            if (checkForWin())
+            {
+                markAllCells();
+                MessageBox.Show("You won!!!  Your total time was: ");
+            }
+
+            (sender as Button).BackColor = Color.Cornsilk;
+
+            if(board.grid[currentCell.getRow(), currentCell.getColumn()].getLive() == true)
+            {
+                for (int r = 0; r < board.getSize(); r++)
+                {
+                    for (int c = 0; c < board.getSize(); c++)
+                    {
+                        board.grid[r, c].setVisited(true);
+                    }
+                }
+                markAllCells();
+
+            }
+            else if (board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors() == 0)
+            {
+                board.floodFill(currentCell.getRow(), currentCell.getColumn());
+                updateButtonLabels();
+            }
+            else
+            {
+                //(sender as Button).Text = board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors().ToString();
+                board.grid[currentCell.getRow(), currentCell.getColumn()].setVisited(true);
+                buttonGrid[currentCell.getRow(), currentCell.getColumn()].Text = board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors().ToString();
+                buttonGrid[currentCell.getRow(), currentCell.getColumn()].Enabled = false;
+            }*/
         }
 
         private void gameLoss()
@@ -219,6 +298,22 @@ namespace Minesweeper_GUI
         private void Form1_Load(object sender, EventArgs e)
         {
             startMenu.Show();
+            
+        }
+
+        private void right_MouseClick(Object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                string[] stringArray2 = (sender as Button).Tag.ToString().Split('|');
+                int row2 = int.Parse(stringArray2[0]);
+                int column2 = int.Parse(stringArray2[1]);
+
+                Cell currentCell2 = board.grid[row2, column2];
+
+                buttonGrid[currentCell2.getRow(), currentCell2.getColumn()].Image =
+                    (Image)(new Bitmap(bombImage, new Size(buttonGrid[currentCell2.getRow(), currentCell2.getColumn()].Width, buttonGrid[currentCell2.getRow(), currentCell2.getColumn()].Height)));
+            }
             
         }
 
