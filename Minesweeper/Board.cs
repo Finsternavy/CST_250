@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Minesweeper
+namespace Minesweeper_GUI
 {
-    class Board
+    public class Board
     {
         private int size = 0;
         public Cell[,] grid;

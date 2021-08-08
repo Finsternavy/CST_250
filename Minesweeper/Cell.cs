@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Minesweeper
+namespace Minesweeper_GUI
 {
-    class Cell
+    public class Cell
     {
         private int row = -1;
         private int column = -1;
