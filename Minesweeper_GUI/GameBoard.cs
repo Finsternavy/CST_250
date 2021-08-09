@@ -15,6 +15,8 @@ namespace Minesweeper_GUI
         Image bombImage;
         Image flagImage;
         public Stopwatch stopWatch = new Stopwatch();
+        public string difficulty;
+        int successfulCellsClicked;
 
         public GameBoard(StartMenu startMenu)
         {
@@ -96,10 +98,12 @@ namespace Minesweeper_GUI
                     {
                         board.floodFill(currentCell.getRow(), currentCell.getColumn());
                         updateButtonLabels();
+                        this.successfulCellsClicked = this.successfulCellsClicked + board.floodFillCellsEffected;
+                        board.floodFillCellsEffected = 0;
                     }
                     else
                     {
-                        //(sender as Button).Text = board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors().ToString();
+                        this.successfulCellsClicked++;
                         board.grid[currentCell.getRow(), currentCell.getColumn()].setVisited(true);
                         buttonGrid[currentCell.getRow(), currentCell.getColumn()].Text = board.grid[currentCell.getRow(), currentCell.getColumn()].getLiveNeighbors().ToString();
                         buttonGrid[currentCell.getRow(), currentCell.getColumn()].Enabled = false;
@@ -109,8 +113,11 @@ namespace Minesweeper_GUI
                     {
                         gameWin();
                         stopWatch.Stop();
-                        string elapsedTime = stopWatch.Elapsed.Seconds.ToString();
+                        int elapsedTime = stopWatch.Elapsed.Seconds;
                         MessageBox.Show("You won!!!  Your total time was: " + stopWatch.Elapsed.Seconds.ToString());
+
+                        HighScoreForm highScoreForm = new HighScoreForm(difficulty, successfulCellsClicked, elapsedTime);
+                        highScoreForm.Show();
                     }
 
                     break;

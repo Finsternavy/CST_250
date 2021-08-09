@@ -20,16 +20,19 @@ namespace Minesweeper_GUI
         {
             if(easyRadioButton.Checked == true)
             {
-                gameBoard.populateGrid(12);
+                gameBoard.difficulty = "Easy";
+                gameBoard.populateGrid(4);
                 gameBoard.stopWatch.Start();
             }
             else if(mediumRadioButton.Checked == true)
             {
+                gameBoard.difficulty = "Medium";
                 gameBoard.populateGrid(18);
                 gameBoard.stopWatch.Start();
             }
             else
             {
+                gameBoard.difficulty = "Hard";
                 gameBoard.populateGrid(25);
                 gameBoard.stopWatch.Start();
             }

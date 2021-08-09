@@ -9,6 +9,7 @@ namespace Minesweeper_GUI
         private int size = 0;
         public Cell[,] grid;
         private int difficulty = 15;
+        public int floodFillCellsEffected = 0;
 
         public Board(int size)
         {
@@ -139,6 +140,7 @@ namespace Minesweeper_GUI
 
         public void floodFill(int row, int column)
         {
+            floodFillCellsEffected++;
             //List<Cell> cellsForFloodFill = new List<Cell>();
             grid[row, column].setVisited(true);
 
