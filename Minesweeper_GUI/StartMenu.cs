@@ -21,7 +21,7 @@ namespace Minesweeper_GUI
             if(easyRadioButton.Checked == true)
             {
                 gameBoard.difficulty = "Easy";
-                gameBoard.populateGrid(4);
+                gameBoard.populateGrid(12);
                 gameBoard.stopWatch.Start();
             }
             else if(mediumRadioButton.Checked == true)
